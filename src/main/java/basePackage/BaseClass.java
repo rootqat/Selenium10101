@@ -28,7 +28,7 @@ public class BaseClass {
 	public BaseClass() {
 		try {
 			pro = new Properties();
-			string filePath=System.getProperty("user.dir") +"\\src\\main\\java\\configuration\\config.properties";
+			String filePath=System.getProperty("user.dir") +"\\src\\main\\java\\configuration\\config.properties";
 			FileInputStream fis = new FileInputStream(filePath);
 			pro.load(fis);
 		} catch (FileNotFoundException e) {
