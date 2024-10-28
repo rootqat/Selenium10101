@@ -28,18 +28,18 @@ jobs:
     - name: Run Selenium Tests
       run: mvn clean test
 
-    # Step 6: Archive test results (JUnit XML reports)
-    - name: Archive test results
-      uses: actions/upload-artifact@v4
+   # Step 6: TestNg Report
+    - name: Upload TestNG report artifact
+      uses: actions/upload-artifact@v3
       with:
-        name: test-results
-        path: target/surefire-reports/
+          name: testng-report
+          path: target/surefire-reports
 
-    # Step 7: Test Report
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      if: success() || failure()    # run this step even if previous step failed
-      with:
-          name: JEST Tests            # Name of the check run which will be created
-          path: reports/jest-*.xml    # Path to test results
-          reporter: jest-junit        # Format of test results
+  # Step 7: TestNg Report on github
+    - name: Display TestNG Summary in Job Summary
+      run: |
+          echo "## TestNG Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Total Tests: $(grep -o '<test-method status="PASS"' target/surefire-reports/testng-results.xml | wc -l)" >> $GITHUB_STEP_SUMMARY
+          echo "- Failed Tests: $(grep -o '<test-method status="FAIL"' target/surefire-reports/testng-results.xml | wc -l)" >> $GITHUB_STEP_SUMMARY
+          echo "- Skipped Tests: $(grep -o '<test-method status="SKIP"' target/surefire-reports/testng-results.xml | wc -l)" >> $GITHUB_STEP_SUMMARY
+
