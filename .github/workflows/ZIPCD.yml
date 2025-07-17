@@ -25,7 +25,7 @@ jobs:
 
       - name: Run TestNG Tests
         working-directory: extracted
-        run: mvn test -DsuiteXmlFile=testng.xml
+        run: mvn test
 
       - name: Upload Test Reports
         if: always()  # ensures it runs even if tests fail
