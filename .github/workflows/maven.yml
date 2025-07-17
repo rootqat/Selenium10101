@@ -26,6 +26,6 @@ jobs:
   
     # Step 5: Build selenium project
     - name: Build project Selenium Tests
-      run: mvn clean package
+      run: mvn clean
 
   
