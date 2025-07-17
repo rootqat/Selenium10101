@@ -8,8 +8,7 @@ on:
 jobs:
   run-tests:
     runs-on: windows-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }} 
-    
+
     steps:
     # Step 1: Checkout the code from the repository
     - name: Checkout code
