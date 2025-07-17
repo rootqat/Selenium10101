@@ -1,5 +1,4 @@
-# .github/workflows/ci.yml
-name: Build Pipeline Create Zip folder
+name: Build Pipeline
 
 on:
   push:
@@ -9,29 +8,39 @@ on:
 
 jobs:
   build:
-    name: Build and Archive Code
     runs-on: windows-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Clean using Maven (optional)
+      - name: Clean Project (optional)
         run: mvn clean
 
-      - name: Create ZIP package
+      - name: Create ZIP of Project
         run: |
           mkdir output
           powershell Compress-Archive -Path * -DestinationPath output/selenium-code.zip
 
-      - name: Upload ZIP Artifact
+      - name: Upload ZIP as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: selenium-code-zip
           path: output/selenium-code.zip
+
+      - name: Commit ZIP to ci-artifacts branch
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git fetch origin
+          git checkout -B ci-artifacts
+          copy output\selenium-code.zip selenium-code.zip
+          git add selenium-code.zip
+          git commit -m "Update test ZIP from CI: ${{ github.sha }}"
+          git push -f origin ci-artifacts
