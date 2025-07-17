@@ -1,0 +1,36 @@
+# .github/workflows/ci.yml
+name: Build Pipeline ZIP
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build and Archive Code
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Maven Clean (Optional)
+        run: mvn clean
+
+      - name: Archive project as ZIP
+        run: |
+          powershell Compress-Archive -Path * -DestinationPath selenium-tests.zip
+
+      - name: Upload ZIP as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenium-code-zip
+          path: selenium-tests.zip
