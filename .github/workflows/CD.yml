@@ -2,7 +2,7 @@ name: Java Selenium Tests
 
 on:
  workflow_run:
-    workflows: Buld Pipeline # Name of the first workflow
+    workflows: ZIP Buld Pipeline # Name of the first workflow
     types:
       - completed 
 jobs:
