@@ -44,3 +44,4 @@ jobs:
           git add selenium-code.zip
           git commit -m "Update test ZIP from CI: ${{ github.sha }}"
           git push -f origin ci-artifacts
+          
