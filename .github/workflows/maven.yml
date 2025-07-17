@@ -1,4 +1,4 @@
-name: Java Selenium Tests
+name: Buld Pipeline
 
 on:
   push:
