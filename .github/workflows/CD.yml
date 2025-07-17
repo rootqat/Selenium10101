@@ -1,0 +1,36 @@
+name: Java Selenium Tests
+
+on:
+ workflow_run:
+    workflows: Buld Pipeline # Name of the first workflow
+    types:
+      - completed 
+jobs:
+  run-tests:
+    runs-on: windows-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} 
+    
+    steps:
+    # Step 1: Checkout the code from the repository
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Step 2: Set up JDK
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+  
+    # Step 5: Run Selenium tests
+    - name: Run Selenium Tests
+      run: mvn clean test
+
+   # Step 6: TestNg Report
+    - name: Upload TestNG report artifact
+      uses: actions/upload-artifact@v3
+      with:
+          name: testng-report
+          path: ../Reports
+
+ 
