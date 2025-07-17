@@ -6,28 +6,30 @@ on:
 
 jobs:
   deploy-and-run-tests:
-    name: Run TestNG Tests
     runs-on: windows-latest
 
     steps:
-      - name: Download Artifact to folder
-        uses: actions/download-artifact@v4
+      - name: Checkout ci-artifacts branch
+        uses: actions/checkout@v4
         with:
-          name: selenium-code-zip
-          path: artifact
+          ref: ci-artifacts
 
-      - name: List files (debug)
-        run: dir artifact
+      - name: Extract selenium-code.zip
+        run: Expand-Archive -Path selenium-code.zip -DestinationPath extracted
 
-      - name: Extract ZIP to extracted/
-        run: Expand-Archive -Path artifact/selenium-code.zip -DestinationPath extracted
-
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Run TestNG Suite from extracted
+      - name: Run TestNG Tests
         working-directory: extracted
         run: mvn test -DsuiteXmlFile=testng.xml
+
+      - name: Upload Test Reports
+        if: always()  # ensures it runs even if tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: testng-reports
+          path: extracted/reports
