@@ -1,5 +1,5 @@
 # .github/workflows/ci.yml
-name: Build Pipeline ZIP
+name: Build Pipeline
 
 on:
   push:
@@ -22,15 +22,16 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Maven Clean (Optional)
+      - name: Clean using Maven (optional)
         run: mvn clean
 
-      - name: Archive project as ZIP
+      - name: Create ZIP package
         run: |
-          powershell Compress-Archive -Path * -DestinationPath selenium-tests.zip
+          mkdir output
+          powershell Compress-Archive -Path * -DestinationPath output/selenium-code.zip
 
-      - name: Upload ZIP as Artifact
+      - name: Upload ZIP Artifact
         uses: actions/upload-artifact@v4
         with:
           name: selenium-code-zip
-          path: selenium-tests.zip
+          path: output/selenium-code.zip
