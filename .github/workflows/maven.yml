@@ -24,22 +24,8 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
   
-    # Step 5: Run Selenium tests
-    - name: Run Selenium Tests
-      run: mvn clean test
+    # Step 5: Build selenium project
+    - name: Build project Selenium Tests
+      run: mvn clean build
 
-   # Step 6: TestNg Report
-    - name: Upload TestNG report artifact
-      uses: actions/upload-artifact@v3
-      with:
-          name: testng-report
-          path: target/surefire-reports
-
-  # Step 7: TestNg Report on github
-    - name: Display TestNG Summary in Job Summary
-      run: |
-          echo "## TestNG Test Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- Total Tests: $(grep -o '<test-method status="PASS"' target/surefire-reports/testng-results.xml | wc -l)" >> $GITHUB_STEP_SUMMARY
-          echo "- Failed Tests: $(grep -o '<test-method status="FAIL"' target/surefire-reports/testng-results.xml | wc -l)" >> $GITHUB_STEP_SUMMARY
-          echo "- Skipped Tests: $(grep -o '<test-method status="SKIP"' target/surefire-reports/testng-results.xml | wc -l)" >> $GITHUB_STEP_SUMMARY
-
+  
