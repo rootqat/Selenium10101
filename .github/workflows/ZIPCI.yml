@@ -1,5 +1,5 @@
 # .github/workflows/ci.yml
-name: Build Pipeline
+name: Build Pipeline Create Zip folder
 
 on:
   push:
